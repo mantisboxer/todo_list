@@ -6,14 +6,15 @@ const TodoList = () => {
   
   const [headingInput, setHeadingInput] = useState('');
   
-  const [listInputs, setListInputs] = useState({})
+  const [listInputs, setListInputs] = useState({});
   
   const handleAddTodo = () => {
     if (headingInput.trim() !== '') {
       setTodos([...todos, {heading: headingInput, lists: []}]);
       setHeadingInput('');
     }
-  }
+  };
+
   const handleAddList = (index) => {
     if (listInputs[index] && listInputs[index].trim() !== '') {
         const newTodos = [...todos];
@@ -21,10 +22,17 @@ const TodoList = () => {
         setTodos(newTodos);
         setListInputs({ ...listInputs, [index]: '' });
     }
-};
-const handleListInputChange = (index, value) => {
+  };
+
+  const handleListInputChange = (index, value) => {
     setListInputs({ ...listInputs, [index]: value });
-};
+  };
+  
+  const handleDeleteTodo = (index) => {
+    const newTodos = [...todos];
+    newTodos.splice(index, 1);
+    setTodos(newTodos);
+  };
 
   return (
     <>
@@ -46,6 +54,13 @@ const handleListInputChange = (index, value) => {
           <div key={index} className='todo-card'>
             <div className='heading_todo'>
               <h3>{todo.heading}</h3> {/* Display the heading here */}
+              <ul>
+             {todo.lists.map((list, listIndex) => (
+               <li key={listIndex} className='todo_inside_list'>
+                <p>{list}</p>
+               </li>
+             ))}
+              </ul>
               <div className='add_list'>
                 <input
                   type = "text"
